@@ -35,31 +35,27 @@ export async function create(bookingData) {
     }  
 }
 
+export async function getRawById(id) {
+    try {
+        const foundBooking = await Booking.findById(id).lean()
+        return foundBooking ?? null
+    } catch (error) {
+        console.error("Error al obtener reserva por id de MongoDB", error)
+        throw error
+    }
+}
+
 export async function update(id, changes) {
-
-    try {        
-        const booking = await Booking.findById(id)
-        if (!booking) return null
-        
-        const { _id, serviceId, quantity = 1, ...allowedChanges } = changes
-        
-        booking.set(allowedChanges) // aplica cambios
-    
-        const existing = booking.services.find(item => String(item.service) === serviceId) // busco si exoste ua el servicio
-        
-        if (existing) {
-            existing.quantity += Number(quantity) // si ya existe el servicio, suma a cantidad
-        } else if (serviceId) {
-            booking.services.push({ service: serviceId, quantity: Number(quantity) }) // no existe: agrega nuevo servicio
-        }
-        
-        await booking.save() // garda cambios en booking
-        
-        return booking.toObject()
-
+    try {
+        const updatedBooking = await Booking.findByIdAndUpdate(
+            id,
+            changes,
+            { new: true, runValidators: true }
+        ).lean()
+        return updatedBooking ?? null
     } catch (error) {
         console.error("Error al modificar reserva en MongoDB", error)
-        throw error             
+        throw error
     }
 }
 

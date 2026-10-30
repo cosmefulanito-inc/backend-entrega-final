@@ -19,3 +19,7 @@ export async function update(id, changes){
 export async function remove(id) {
     return dao.remove(id)
 }
+
+export async function getRawById(id) {
+    return dao.getRawById(id)
+}

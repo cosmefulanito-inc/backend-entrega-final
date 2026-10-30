@@ -22,6 +22,7 @@ export const ControllerGetServiceById = async (req, res) => {
 export const ControllerCreateService = async (req, res) => {
   try {
     const newService = await serviceServices.addService(req.body)
+    req.app.get("io").emit("service:created", newService)   //  para que funcione con socket
     res.status(201).json(newService)
   } catch (error) {
     res.status(500).json({ error: error.message })
