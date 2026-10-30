@@ -22,13 +22,13 @@ Además, el proyecto incluye vistas renderizadas en el servidor con Handlebars y
 1. Clonar el repositorio:
 
 ```bash
-git clone https://github.com/cosmefulanito-inc/backend-preentrega8.git
+git clone https://github.com/cosmefulanito-inc/backend-entrega-final.git
 ```
 
 2. Entrar a la carpeta del proyecto:
 
 ```bash
-cd backend-preentrega8
+cd backend-entrega-final
 ```
 
 3. Instalar las dependencias:
@@ -218,26 +218,29 @@ En la base de datos nunca se guarda el objeto completo del servicio. El modelo d
 
 ```json
 {
-  "_id": "66ac45a1b2c3d4e5f6a7b8c9",
-  "clientName": "Ana Pérez",
-  "clientEmail": "ana@mail.com",
-  "date": "2026-10-15T00:00:00.000Z",
-  "time": "10:30",
-  "status": "pending",
-  "services": [
-    {
-      "service": {
-        "_id": "66ab12f4c9e8a1b2c3d4e5f6",
-        "name": "Consulta general",
-        "description": "Atención clínica general",
-        "duration": 30,
-        "price": 5000,
-        "category": "salud",
-        "available": true
-      },
-      "quantity": 2
-    }
-  ]
+  "status": "success",
+  "data": {
+    "_id": "66ac45a1b2c3d4e5f6a7b8c9",
+    "clientName": "Ana Pérez",
+    "clientEmail": "ana@mail.com",
+    "date": "2026-10-15T00:00:00.000Z",
+    "time": "10:30",
+    "status": "pending",
+    "services": [
+      {
+        "service": {
+          "_id": "66ab12f4c9e8a1b2c3d4e5f6",
+          "name": "Consulta general",
+          "description": "Atención clínica general",
+          "duration": 30,
+          "price": 5000,
+          "category": "salud",
+          "available": true
+        },
+        "quantity": 2
+      }
+    ]
+  }
 }
 ```
 
@@ -249,12 +252,11 @@ Para probarlo:
 
 ## Vistas con Handlebars
 
-Express usa Handlebars como motor de vistas. Todas las vistas comparten el layout `views/layouts/main.handlebars`.
+Express usa Handlebars como motor de vistas. La vista usa el layout `views/layouts/main.handlebars`, que incluye la hoja de estilos y los scripts de Socket.io.
 
 | Ruta | Vista | Contenido |
 |---|---|---|
 | `/views/services` | `services.handlebars` | Listado de servicios con nombre, descripción, duración, precio, categoría y disponibilidad |
-| `/views/bookings` | `bookings.handlebars` | Listado de reservas |
 
 El controller de vistas usa los mismos services que la API, de modo que la información que se muestra en el navegador pasa por todas las capas. La vista de servicios muestra el listado completo, sin paginar.
 
@@ -306,7 +308,6 @@ src/
     layouts/
       main.handlebars
     services.handlebars
-    bookings.handlebars
   public/
     css/
       styles.css
@@ -318,7 +319,7 @@ src/
 
 ## Endpoints
 
-Los ids de las rutas (`:sid` y `:bid`) corresponden al `_id` que MongoDB asigna a cada documento. Si el id no tiene un formato válido o no existe, la API responde que el registro no fue encontrado.
+Los ids de las rutas (`:sid` y `:bid`) corresponden al `_id` que MongoDB asigna a cada documento. Si el id no existe, la API responde `404`.
 
 ### Services
 
@@ -379,7 +380,6 @@ Toda reserva nueva se crea con estado `pending` y sin servicios. Si el mismo ser
 | Método | Ruta | Descripción |
 |---|---|---|
 | GET | `/views/services` | Renderiza el listado de servicios. Se actualiza en tiempo real al crear un servicio |
-| GET | `/views/bookings` | Renderiza el listado de reservas |
 
 ## Evolución del proyecto
 
