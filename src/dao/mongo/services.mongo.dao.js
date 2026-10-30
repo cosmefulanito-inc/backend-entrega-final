@@ -33,12 +33,16 @@ export async function getById(id) {
 
 export async function update(id, changes) {
     try {
-        const updatedService = await Service.findByIdAndUpdate(id, changes).lean()
+        const updatedService = await Service.findByIdAndUpdate(
+            id,
+            changes,
+            { new: true, runValidators: true }
+        ).lean()
         return updatedService ?? null
     } catch (error) {
         console.error("Error al modificar servicio en MongoDB", error)
         throw error
-    }    
+    }
 }
 
 export async function remove(id) {
