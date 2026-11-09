@@ -1,6 +1,6 @@
 import { Router } from "express"
-import { validateBody } from "../middlewares/validate.middleware.js"
-import { createBookingSchema, addServiceToBookingSchema } from "../validations/booking.validation.js"
+import { validateBody } from "../middlewares/validateBody.js"
+import { createBookingSchema, addServiceToBookingSchema } from "../validation/booking.validation.js"
 
 import {
   ControllerGetAll,
@@ -16,7 +16,7 @@ router.get("/", ControllerGetAll)
 router.get("/:bid", ControllerGetBookingById)
 
 router.post("/", validateBody(createBookingSchema), ControllerCreateBooking)
-router.post("/:bid/services/:sid", validateBody(addServiceToBookingSchema), ControllerAddServiceToBooking)
+router.post("/:bid/services/:sid", validateBody(addServiceToBookingSchema), ControllerBookingUpdate)
 router.delete("/:bid", ControllerDeleteBooking)
 
 

@@ -2,7 +2,7 @@ import * as serviceServices from "../services/services.service.js"
 
 export const ControllerGetServices = async (req, res) => {
   try {
-    const services = await serviceServices.getServices()
+    const services = await serviceServices.getPaginatedServices(req.query)
     res.status(200).json(services)
   } catch (error) {
     res.status(500).json({ error: error.message })

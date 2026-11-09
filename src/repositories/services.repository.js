@@ -19,3 +19,7 @@ export async function remove(id){
 export async function update(id, changes){
     return dao.update(id, changes)
 }
+
+export async function getPaginated(filter, options){
+    return dao.getPaginated(filter, options)
+}
