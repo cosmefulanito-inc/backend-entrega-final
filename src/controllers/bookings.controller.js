@@ -20,6 +20,7 @@ export const ControllerGetAll = async (req, res) => {
 export const ControllerCreateBooking = async (req, res) => {
   try {
     const newBooking = await bookingServices.createBooking(req.body)
+    req.app.get("io").emit("booking:created", newBooking)
     res.status(201).json({
       status: "success",
       data: newBooking
@@ -70,13 +71,15 @@ export const ControllerBookingUpdate = async (req, res) => {
       })
     }
 
-    const updatedBooking = await bookingServices.updateBooking(bid, { serviceId: sid })
+    const updatedBooking = await bookingServices.addServiceToBooking(bid, sid, req.body.quantity)
     if (!updatedBooking) {
       return res.status(404).json({
         status: "error",
         message: "Reserva no encontrada."
       })
     }
+
+    req.app.get("io").emit("booking:updated", updatedBooking)   //  para que funcione con socket
 
     res.status(200).json({
       status: "success",

@@ -1,7 +1,8 @@
 <h1>Reservas</h1>
 
+<section id="bookings-list">
 {{#each bookings}}
-  <article>
+  <article data-id="{{_id}}">
     <h2>{{clientName}}</h2>
     <p>Email: {{clientEmail}}</p>
     <p>Fecha: {{date}}</p>
@@ -9,5 +10,6 @@
     <p>Estado: {{status}}</p>
   </article>
 {{else}}
-  <p>No hay reservas cargadas</p>
+  <p id="empty-bookings">No hay reservas cargadas</p>
 {{/each}}
+</section>
